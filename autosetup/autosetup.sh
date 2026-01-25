@@ -5,7 +5,7 @@
 
 #exec {tracefd}>/home/dietpi/.mupibox/autosetup.log; BASH_XTRACEFD=$tracefd; PS4=':$LINENO+'; set -x
 
-RELEASE="dev"
+RELEASE="stable"
 LOG="/tmp/autosetup.log"
 VER_JSON="/tmp/version.json"
 OS=$(grep -E '^(VERSION_CODENAME)=' /etc/os-release)  >&3 2>&3
