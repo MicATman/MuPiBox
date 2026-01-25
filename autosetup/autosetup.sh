@@ -414,6 +414,7 @@ exec 3>${LOG}
 	sudo mv -f ${MUPI_SRC}/scripts/wifi/* /usr/local/bin/mupibox/ >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/scripts/mqtt/* /usr/local/bin/mupibox/ >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/scripts/maus/* /usr/local/bin/mupibox/ >&3 2>&3
+	sudo sed -zi '/i2c-dev/!s/$/\uinput/' /etc/modules
 	
 	sudo mv -f ${MUPI_SRC}/config/templates/add_wifi.json /boot/add_wifi.json >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/config/templates/.bashrc /home/dietpi/.bashrc >&3 2>&3
@@ -643,7 +644,7 @@ exec 3>${LOG}
 	sudo systemctl enable dietpi-dashboard.service >&3 2>&3
 	sudo systemctl start dietpi-dashboard.service >&3 2>&3
 	sudo systemctl enable maus.service >&3 2>&3
-	sudo systemctl start maus.service >&3 2>&3
+	
 	after=$(date +%s)
 	echo -e "## Enable and start services  ##  finished after $((after - $before)) seconds" >&3 2>&3
 	STEP=$(($STEP + 1))
