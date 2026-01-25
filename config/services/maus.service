@@ -1,0 +1,8 @@
+Unit]
+Description=mausrad
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=python3 /usr/local/bin/mupibox/maus.py
