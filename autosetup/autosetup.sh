@@ -413,6 +413,7 @@ exec 3>${LOG}
 	sudo mv -f ${MUPI_SRC}/scripts/fan/* /usr/local/bin/mupibox/ >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/scripts/wifi/* /usr/local/bin/mupibox/ >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/scripts/mqtt/* /usr/local/bin/mupibox/ >&3 2>&3
+	sudo mv -f ${MUPI_SRC}/scripts/maus/* /usr/local/bin/mupibox/ >&3 2>&3
 	
 	sudo mv -f ${MUPI_SRC}/config/templates/add_wifi.json /boot/add_wifi.json >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/config/templates/.bashrc /home/dietpi/.bashrc >&3 2>&3
