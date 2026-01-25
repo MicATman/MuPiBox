@@ -5,6 +5,8 @@
 #                      https://kapeli.com/cheat_sheets/Chromium_Command_Line_Switches.docset/Contents/Resources/Documents/index
 # /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh
 clear
+sudo sed -i 's/"exited_cleanly":"false"/"exited_cleanly":"true"/' /home/dietpi/.config/chromium/Default/Preferences
+sudo sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/dietpi/.config/chromium/Default/Preferences
 /usr/local/bin/mupibox/./startup.sh &
 
 rm ~/.config/chromium/Singleton*
@@ -19,6 +21,7 @@ CACHE_PATH=$(/usr/bin/jq -r .chromium.cachepath ${CONFIG})
 CACHE_SIZE=$(/usr/bin/jq -r .chromium.cachesize ${CONFIG})
 CACHE_SIZE=$(( $CACHE_SIZE * 1024 * 1024))
 KIOSK=$(/usr/bin/jq -r .chromium.kiosk ${CONFIG})
+MAUS=$(/usr/bin/jq -r .chromium.maus ${CONFIG})
 CHROMIUM_OPTS=""
 
 # Fast feedback and process control
@@ -43,13 +46,22 @@ CHROMIUM_OPTS="${CHROMIUM_OPTS} --window-size=${RES_X:-1280},${RES_Y:-720} --win
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --cast-app-background-color=44afe2ff --default-background-color=44afe2ff"
 # KIOSK Parameters
 if ${KIOSK} ; then
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk --start-fullscreen --start-maximized"
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk http://localhost:8200 --start-fullscreen --start-maximized"
+else
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized"
+
 fi
 # CACHE Parameters
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --disk-cache-dir=${CACHE_PATH:-/home/dietpi/.mupibox/chromium_cache} --disk-cache-size=${CACHE_SIZE:-33554432}"
+# Spotify Web Playback SDK Support
+CHROMIUM_OPTS="${CHROMIUM_OPTS} --autoplay-policy=no-user-gesture-required"
 # DEBUG MODE
 if [ "${DEBUG}" = "1" ]; then
 	CHROMIUM_OPTS="${CHROMIUM_OPTS} --enable-logging --v=1 --disable-pinch"
+fi
+# MAUS Mode
+if [ "${MAUS}" = "0" ]; then
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} -- -nocursor tty2"
 fi
 # Spotify Web Playback SDK Support
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --autoplay-policy=no-user-gesture-required"
@@ -67,7 +79,7 @@ STARTX='xinit'
 [ "$USER" = 'root' ] || STARTX='startx'
 
 #sudo nice -n -19 sudo -u dietpi xinit "$FP_CHROMIUM" $CHROMIUM_OPTS --homepage "${URL:-http://MuPiBox:8200}" -- -nocursor tty2 &
-exec "$STARTX" "$FP_CHROMIUM" $CHROMIUM_OPTS --homepage "http://localhost:8200" -- -nocursor tty2 &
+exec "$STARTX" "$FP_CHROMIUM" $CHROMIUM_OPTS &
 
 # BLUETOOTH
 pactl load-module module-bluetooth-discover
