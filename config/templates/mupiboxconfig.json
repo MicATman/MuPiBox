@@ -282,7 +282,7 @@
 		"sccrollanimation": false,
 		"cachepath": "/home/dietpi/.mupibox/chromium_cache",
 		"cachesize": "128",
-		"kiosk": true
+		"kiosk": false,
 		"maus": true
 	},
 	"pm2": {
