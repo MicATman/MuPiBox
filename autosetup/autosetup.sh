@@ -420,9 +420,10 @@ exec 3>${LOG}
 	sudo mv -f ${MUPI_SRC}/config/templates/.bashrc /home/dietpi/.bashrc >&3 2>&3
 
 	sudo chown dietpi:dietpi /home/dietpi/.bashrc >&3 2>&3
-	
+	sudo mv -f ${MUPI_SRC}/config/templates/config.txt /boot/firmware/config.txt >&3 2>&3
+	sudo mv -f ${MUPI_SRC}/config/templates/cmdline.txt /boot/firmware/cmdline.txt >&3 2>&3
 	sudo chmod 755 /usr/local/bin/mupibox/* >&3 2>&3
-
+	
 	after=$(date +%s)
 	echo -e "## Copy MuPiBox-Files  ##  finished after $((after - $before)) seconds" >&3 2>&3
 	STEP=$(($STEP + 1))
