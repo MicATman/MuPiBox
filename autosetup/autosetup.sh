@@ -615,6 +615,7 @@ exec 3>${LOG}
 	sudo mv -f ${MUPI_SRC}/config/services/mupi_fan.service /etc/systemd/system/mupi_fan.service  >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/config/services/mupi_autoconnect-wifi.service /etc/systemd/system/mupi_autoconnect-wifi.service  >&3 2>&3
 	sudo mv -f ${MUPI_SRC}/config/services/mupi_mqtt.service /etc/systemd/system/mupi_mqtt.service  >&3 2>&3
+	sudo mv -f ${MUPI_SRC}/config/services/maus.service /etc/systemd/system/maus.service  >&3 2>&3
 	sudo systemctl daemon-reload >&3 2>&3
 	sudo systemctl enable mupi_wifi.service >&3 2>&3
 	sudo systemctl start mupi_wifi.service >&3 2>&3
@@ -641,7 +642,8 @@ exec 3>${LOG}
 	sudo systemctl start mupi_powerled.service >&3 2>&3
 	sudo systemctl enable dietpi-dashboard.service >&3 2>&3
 	sudo systemctl start dietpi-dashboard.service >&3 2>&3
-
+	sudo systemctl enable maus.service >&3 2>&3
+	sudo systemctl start maus.service >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Enable and start services  ##  finished after $((after - $before)) seconds" >&3 2>&3
 	STEP=$(($STEP + 1))
