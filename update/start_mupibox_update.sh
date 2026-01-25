@@ -213,6 +213,22 @@ echo "==========================================================================
 #	after=$(date +%s)
 #	echo -e "## Setup docker and container  ##  finished after $((after - $before)) seconds" >&3 2>&3
 #	STEP=$(($STEP + 1))
+
+	###############################################################################################
+
+	echo -e "XXX\n${STEP}\nSetup DietPi-Dashboard... \nXXX"	
+	before=$(date +%s)
+	sudo mkdir /opt/dietpi-dashboard >&3 2>&3
+	sudo rm /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo curl -fL "$(curl -sSf 'https://api.github.com/repos/nonnorm/DietPi-Dashboard/releases/74915428' | mawk -F\" "/\"browser_download_url\": \".*dietpi-dashboard-$(uname -m)\"/{print \$4}")" -o /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo chmod +x /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo curl -sSfL https://raw.githubusercontent.com/nonnorm/DietPi-Dashboard/v0.6.1/config.toml -o /opt/dietpi-dashboard/config.toml  >&3 2>&3
+	#bash -c 'su dietpi -c "yes \"\" | sudo /boot/dietpi/dietpi-software install 200"' >&3 2>&3
+	sudo /usr/bin/sed -i 's/#terminal_user = "root"/terminal_user = "dietpi"/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
+	sudo /usr/bin/sed -i 's/#pass = false/pass = false/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
+	after=$(date +%s)
+	echo -e "## Setup DietPi-Dashboard  ##  finished after $((after - $before)) seconds" >&3 2>&3
+	STEP=$(($STEP + 1))
 	
 	###############################################################################################
 
