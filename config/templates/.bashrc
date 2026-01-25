@@ -202,5 +202,7 @@ clear
 
 # Failsafe: Never load this script in non-interactive shells, e.g. SFTP, SCP or rsync
 [[ -t 0 && $- == *'i'* ]] || return 0
+sed -i 's/"exited_cleanly":"false"/"exited_cleanly":"true"/' /home/dietpi/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/dietpi/.config/chromium/Default/Preferences
 
 mupi-info
