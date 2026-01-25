@@ -23,7 +23,7 @@ exec 3>${LOG}
 
 {
 	#packages2install="git libasound2 jq samba mplayer pulseaudio-module-bluetooth pip id3tool bluez zip rrdtool scrot net-tools wireless-tools autoconf automake bc build-essential raspberrypi-kernel-headers dkms"
-	packages2install="gpiod git libasound2 mplayer pulseaudio-module-bluetooth pip id3tool bluez zip rrdtool scrot net-tools wireless-tools autoconf automake bc build-essential python3-gpiozero python3-rpi.gpio python3-lgpio python3-serial python3-requests python3-paho-mqtt libgles2-mesa mesa-utils libsdl2-dev preload python3-smbus2 pigpio libjson-c-dev i2c-tools libi2c-dev python3-smbus python3-alsaaudio python3-netifaces"
+	packages2install="lighttpd-mod-openssl gpiod git libasound2 jq samba mplayer pulseaudio-module-bluetooth pip id3tool bluez zip unzip rrdtool scrot net-tools wireless-tools autoconf automake bc build-essential python3-gpiozero python3-rpi.gpio python3-lgpio python3-serial python3-requests python3-paho-mqtt libgles2-mesa mesa-utils libsdl2-dev preload python3-smbus2 pigpio libjson-c-dev i2c-tools libi2c-dev python3-smbus python3-alsaaudio python3-netifaces python3-evdev python3-uinput python3-flask libwidevinecdm0"
 	STEP=0
 
 	###############################################################################################
@@ -99,7 +99,7 @@ exec 3>${LOG}
 		STEP=$(($STEP + 1))
 	fi
 	
-	sudo su - -c "yes '' | /boot/dietpi/dietpi-software install 200" >&3 2>&3
+	# sudo su - -c "yes '' | /boot/dietpi/dietpi-software install 200" >&3 2>&3
 
 	###############################################################################################
 
@@ -217,7 +217,9 @@ exec 3>${LOG}
 	mkdir /home/dietpi/MuPiBox/media/other >&3 2>&3
 	mkdir /home/dietpi/MuPiBox/media/cover >&3 2>&3
 	mkdir /home/dietpi/MuPiBox/themes >&3 2>&3
-	mkdir -p /home/dietpi/.mupibox/Sonos-Kids-Controller-master/ >&3 2>&3
+	mkdir -p /home/dietpi/.mupibox/Sonos-Kids-Controller-master >&3 2>&3
+	mkdir -p /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server >&3 2>&3
+	mkdir -p /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config >&3 2>&3
 	sudo mkdir /usr/local/bin/mupibox >&3 2>&3
 	#sudo mkdir /etc/spotifyd >&3 2>&3
 	sudo mkdir /etc/mupibox >&3 2>&3
@@ -238,9 +240,10 @@ exec 3>${LOG}
 
 	echo -e "XXX\n${STEP}\nCreate MuPiBox-Config... \nXXX"	
 	before=$(date +%s)
-	MUPIBOX_CONFIG="/etc/mupibox/mupiboxconfig.json" >&3 2>&3
-	sudo mv -f ${MUPI_SRC}/config/templates/mupiboxconfig.json ${MUPIBOX_CONFIG} >&3 2>&3
-	sudo chown root:www-data /etc/mupibox/mupiboxconfig.json >&3 2>&3
+	# MUPIBOX_CONFIG="/etc/mupibox/mupiboxconfig.json" >&3 2>&3
+	# sudo mv -f ${MUPI_SRC}/config/templates/mupiboxconfig.json ${MUPIBOX_CONFIG} >&3 2>&3
+	sudo mv -f -v ${MUPI_SRC}/config/templates/mupiboxconfig.json /etc/mupibox/ >&3 2>&3
+	sudo chown dietpi:dietpi /etc/mupibox/mupiboxconfig.json >&3 2>&3
 	sudo chmod 775 /etc/mupibox/mupiboxconfig.json >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Create MuPiBox-Config  ##  finished after $((after - $before)) seconds" >&3 2>&3
@@ -260,6 +263,7 @@ exec 3>${LOG}
 	pm2 save >&3 2>&3
 	# Setup and start backend-player.
 	mkdir -p /home/dietpi/.mupibox/spotifycontroller-main >&3 2>&3
+	mkdir -p /home/dietpi/.mupibox/spotifycontroller-main/config >&3 2>&3
 	cp /home/dietpi/.mupibox/Sonos-Kids-Controller-master/spotify-control.js /home/dietpi/.mupibox/spotifycontroller-main >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/spotifycontroller.json /home/dietpi/.mupibox/spotifycontroller-main/config/config.json >&3 2>&3
 	ln -s /etc/mupibox/mupiboxconfig.json /home/dietpi/.mupibox/spotifycontroller-main/config/mupiboxconfig.json >&3 2>&3
@@ -277,11 +281,11 @@ exec 3>${LOG}
 
 	# Binaries
 	if [ `getconf LONG_BIT` == 32 ]; then
-		mv ${MUPI_SRC}/bin/librespot/0.6.0/librespot-32bit /usr/bin/librespot >&3 2>&3
-		mv ${MUPI_SRC}/bin/fbv/fbv /usr/bin/fbv >&3 2>&3
+		sudo mv ${MUPI_SRC}/bin/librespot/0.6.0/librespot-32bit /usr/bin/librespot >&3 2>&3
+		sudo mv ${MUPI_SRC}/bin/fbv/fbv /usr/bin/fbv >&3 2>&3
 	else
-		mv ${MUPI_SRC}/bin/librespot/0.6.0/librespot-64bit /usr/bin/librespot >&3 2>&3
-		mv ${MUPI_SRC}/bin/fbv/fbv_64 /usr/bin/fbv >&3 2>&3
+		sudo mv ${MUPI_SRC}/bin/librespot/0.6.0/librespot-64bit /usr/bin/librespot >&3 2>&3
+		sudo mv ${MUPI_SRC}/bin/fbv/fbv_64 /usr/bin/fbv >&3 2>&3
 	fi
 	sudo chmod 755 /usr/bin/fbv /usr/bin/librespot >&3 2>&3
 	after=$(date +%s)
@@ -292,14 +296,14 @@ exec 3>${LOG}
 
 	echo -e "XXX\n${STEP}\nSetup DietPi-Dashboard... \nXXX"	
 	before=$(date +%s)
-	mkdir /opt/dietpi-dashboard >&3 2>&3
-	rm /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
-	curl -fL "$(curl -sSf 'https://api.github.com/repos/ravenclaw900/DietPi-Dashboard/releases/latest' | mawk -F\" "/\"browser_download_url\": \".*dietpi-dashboard-$(uname -m)\"/{print \$4}")" -o /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
-	chmod +x /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
-	curl -sSfL https://raw.githubusercontent.com/ravenclaw900/DietPi-Dashboard/main/config.toml -o /opt/dietpi-dashboard/config.toml  >&3 2>&3
+	sudo mkdir /opt/dietpi-dashboard >&3 2>&3
+	sudo rm /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo curl -fL "$(curl -sSf 'https://api.github.com/repos/nonnorm/DietPi-Dashboard/releases/74915428' | mawk -F\" "/\"browser_download_url\": \".*dietpi-dashboard-$(uname -m)\"/{print \$4}")" -o /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo chmod +x /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	sudo curl -sSfL https://raw.githubusercontent.com/nonnorm/DietPi-Dashboard/v0.6.1/config.toml -o /opt/dietpi-dashboard/config.toml  >&3 2>&3
 	#bash -c 'su dietpi -c "yes \"\" | sudo /boot/dietpi/dietpi-software install 200"' >&3 2>&3
 	sudo /usr/bin/sed -i 's/#terminal_user = "root"/terminal_user = "dietpi"/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
-	sudo /usr/bin/sed -i 's/pass = true/pass = false/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
+	sudo /usr/bin/sed -i 's/#pass = false/pass = false/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Setup DietPi-Dashboard  ##  finished after $((after - $before)) seconds" >&3 2>&3
 	STEP=$(($STEP + 1))
@@ -342,7 +346,7 @@ exec 3>${LOG}
 	cp ${MUPI_SRC}/media/sound/startup.wav /home/dietpi/MuPiBox/sysmedia/sound/startup.wav >&3 2>&3
 	cp ${MUPI_SRC}/media/sound/low.wav /home/dietpi/MuPiBox/sysmedia/sound/low.wav >&3 2>&3
 	cp ${MUPI_SRC}/media/sound/button_shutdown.wav /home/dietpi/MuPiBox/sysmedia/sound/button_shutdown.wav >&3 2>&3
-	cp ${MUPI_SRC}/media/images/installation.jpg /home/dietpiMuPiBox/sysmedia/images/installation.jpg >&3 2>&3
+	cp ${MUPI_SRC}/media/images/installation.jpg /home/dietpi/MuPiBox/sysmedia/images/installation.jpg >&3 2>&3
 	cp ${MUPI_SRC}/media/images/battery_low.jpg /home/dietpi/MuPiBox/sysmedia/images/battery_low.jpg >&3 2>&3
 
 	after=$(date +%s)
@@ -516,8 +520,8 @@ exec 3>${LOG}
 	#sudo /boot/dietpi/func/dietpi-set_software boot_wait_for_network 0 >&3 2>&3
 	#VERSION=$(curl -sL ${SRC}/version.json | /usr/bin/jq -r .version) >&3 2>&3
 	#sudo /usr/bin/sed -i 's/\"version\": \"\"/\"version\": \"'${VERSION}'\"/g' ${MUPIBOX_CONFIG} >&3 2>&3
-	sudo /usr/bin/cat <<< $(/usr/bin/jq --arg v "${VERSION}" '.mupibox.version = $v' ${MUPIBOX_CONFIG}) > ${MUPIBOX_CONFIG}
-	sudo chmod 775 /etc/mupibox/mupiboxconfig.json >&3 2>&3
+	#sudo /usr/bin/cat <<< $(/usr/bin/jq --arg v "${VERSION}" '.mupibox.version = $v' ${MUPIBOX_CONFIG}) > ${MUPIBOX_CONFIG}
+	#sudo chmod 775 /etc/mupibox/mupiboxconfig.json >&3 2>&3
 	#if grep -q '^initramfs initramfs.img' /boot/config.txt; then
 	#  echo -e "initramfs initramfs.img already set"
 	#else
