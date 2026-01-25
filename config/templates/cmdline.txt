@@ -1,0 +1,1 @@
+root=PARTUUID=63175deb-02 rootfstype=ext4 rootwait quiet net.ifnames=0 logo.nologo console=tty3 vt.global_cursor_default=0 fastboot noatime nodiratime noram splash silent loglevel=7 vt.default_red=68,68,68,68,68,68,68,68 vt.default_grn=175,175,175,175,175,175,175,175 vt.default_blu=226,226,226,226,226,226,226,226 brcmfmac.roamoff=1
