@@ -22,6 +22,7 @@ CACHE_SIZE=$(/usr/bin/jq -r .chromium.cachesize ${CONFIG})
 CACHE_SIZE=$(( $CACHE_SIZE * 1024 * 1024))
 KIOSK=$(/usr/bin/jq -r .chromium.kiosk ${CONFIG})
 MAUS=$(/usr/bin/jq -r .chromium.maus ${CONFIG})
+HOMEP=$(/usr/bin/jq -r .chromium.homep ${CONFIG})
 CHROMIUM_OPTS=""
 
 # Fast feedback and process control
@@ -46,7 +47,8 @@ CHROMIUM_OPTS="${CHROMIUM_OPTS} --window-size=${RES_X:-1280},${RES_Y:-720} --win
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --cast-app-background-color=44afe2ff --default-background-color=44afe2ff"
 # KIOSK Parameters
 if ${KIOSK} ; then
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk http://localhost:8200 --start-fullscreen --start-maximized"
+# CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk http://localhost:8200 --start-fullscreen --start-maximized"
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk ${HOMEP} --start-fullscreen --start-maximized"
 else
 	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized"
 
