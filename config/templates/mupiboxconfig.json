@@ -282,7 +282,7 @@
 		"sccrollanimation": false,
 		"cachepath": "/home/dietpi/.mupibox/chromium_cache",
 		"cachesize": "128",
-		"kiosk": false,
+		"kiosk": true,
 		"maus": true,
 		"homep": "http://localhost:8200"
 	},
