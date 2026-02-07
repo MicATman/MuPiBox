@@ -1,13 +1,5 @@
 import uinput
 from evdev import InputDevice, categorize, ecodes
-from gpiozero import Button
-from subprocess import call
-from signal import pause
-
-btn = Button(25, pull_up=True)
-def run_script():
-    call(["/usr/local/bin/mupibox/button.sh"])
-btn.when_pressed = run_script
 
 # Maus-Device öffnen (prüfe vorher mit: ls /dev/input/by-id/)
 # device_path = '/dev/input/by-id/usb-Logitech_USB_Optical_Mouse-event-mouse'
