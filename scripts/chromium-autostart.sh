@@ -48,13 +48,13 @@ CHROMIUM_OPTS="${CHROMIUM_OPTS} --cast-app-background-color=44afe2ff --default-b
 # KIOSK Parameters
 if ${KIOSK} ; then
 # CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk http://localhost:8200 --start-fullscreen --start-maximized"
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk ${HOMEP} --start-fullscreen --start-maximized"
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk ${HOMEP} --start-fullscreen --start-maximized --user-data-dir="/home/dietpi/chromedata/""
 else
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized"
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized --user-data-dir="/home/dietpi/chromedata/""
 
 fi
 # CACHE Parameters
-CHROMIUM_OPTS="${CHROMIUM_OPTS} --disk-cache-dir=${CACHE_PATH:-/home/dietpi/.mupibox/chromium_cache} --disk-cache-size=${CACHE_SIZE:-33554432}"
+CHROMIUM_OPTS="${CHROMIUM_OPTS} --disk-cache-dir=${CACHE_PATH} --disk-cache-size=${CACHE_SIZE}"
 # Spotify Web Playback SDK Support
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --autoplay-policy=no-user-gesture-required"
 # DEBUG MODE
@@ -69,7 +69,7 @@ fi
 CHROMIUM_OPTS="${CHROMIUM_OPTS} --autoplay-policy=no-user-gesture-required"
 
 # If you want tablet mode, uncomment the next line.
-#CHROMIUM_OPTS+=' --force-tablet-mode --tablet-ui'
+#CHROMIUM_OPTS= --force-tablet-mode --tablet-ui"
 # Home page
 
 # RPi or Debian Chromium package
