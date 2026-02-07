@@ -1,0 +1,8 @@
+Unit]
+Description=Button
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=python3 /usr/local/bin/mupibox/button.py
