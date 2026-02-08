@@ -1,0 +1,112 @@
+[
+  {
+    "index": 0,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "artist": "Radio SAW",
+    "cover": "http://mupibox/cover/radiosaw.png",
+    "title": "Radio SAW",
+    "id": "https://stream.radiosaw.de/saw/mp3-192/"
+  },
+  {
+    "index": 1,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "artist": "Radio SAW 2000er",
+    "cover": "http://mupibox/cover/saw2000er.png",
+    "title": "Radio SAW 2000er",
+    "id": "https://stream.saw-musikwelt.de/saw-2000er/stream.mp3"
+  },
+  {
+    "index": 2,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW 90er",
+    "artist": "Radio SAW 90er",
+    "cover": "http://mupibox/cover/saw90er.png",
+    "id": "https://stream.saw-musikwelt.de/saw-90er/stream.mp3"
+  },
+  {
+    "index": 3,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW 80er",
+    "artist": "Radio SAW 80er",
+    "cover": "http://mupibox/cover/saw80er.png",
+    "id": "https://stream.saw-musikwelt.de/saw-80er/stream.mp3"
+  },
+  {
+    "index": 4,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW 70er",
+    "artist": "Radio SAW 70er",
+    "cover": "http://mupibox/cover/saw70er.png",
+    "id": "https://stream.saw-musikwelt.de/saw-70er/stream.mp3"
+  },
+  {
+    "index": 5,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW Schlagerparty",
+    "artist": "Radio SAW Schlagerparty",
+    "cover": "http://mupibox/cover/sawschlagerparty.png",
+    "id": "https://stream.saw-musikwelt.de/saw-schlagerparty/stream.mp3"
+  },
+  {
+    "index": 6,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW Schlager",
+    "artist": "Radio SAW Schlager",
+    "cover": "http://mupibox/cover/sawschlager.png",
+    "id": "https://stream.saw-musikwelt.de/saw-schlager/stream.mp3"
+  },
+  {
+    "index": 7,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Radio SAW Party",
+    "artist": "Radio SAW Party",
+    "cover": "http://mupibox/cover/sawpartyneu.png",
+    "id": "https://stream.saw-musikwelt.de/saw-party/stream.mp3"
+  },
+  {
+    "index": 8,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Hitradio OE3",
+    "artist": "Hitradio OE3",
+    "cover": "http://mupibox/cover/hitradiooe3.png",
+    "id": "http://orf-live.ors-shoutcast.at/oe3-q2a"
+  },
+  {
+    "index": 9,
+    "type": "radio",
+    "category": "other",
+    "shuffle": false,
+    "aPartOfAll": false,
+    "title": "Antenne Salzburg",
+    "artist": "Antenne Salzburg",
+    "cover": "http://mupibox/cover/antennesalzburg.png",
+    "id": "https://frontend.streamonkey.net/antsalzburg-live/stream/mp3"
+  }
+]
