@@ -5,11 +5,11 @@
 #                      https://kapeli.com/cheat_sheets/Chromium_Command_Line_Switches.docset/Contents/Resources/Documents/index
 # /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh
 clear
-sudo sed -i 's/"exited_cleanly":"false"/"exited_cleanly":"true"/' /home/dietpi/.config/chromium/Default/Preferences
-sudo sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/dietpi/.config/chromium/Default/Preferences
+sudo sed -i 's/"exited_cleanly":"false"/"exited_cleanly":"true"/' /home/dietpi/chromedata/Default/Preferences
+sudo sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/dietpi/chromedata/Default/Preferences
 /usr/local/bin/mupibox/./startup.sh &
 
-rm ~/.config/chromium/Singleton*
+sudo rm /home/dietpi/chromedata/Singleton*
 
 CONFIG="/etc/mupibox/mupiboxconfig.json"
 RES_X=$(/usr/bin/jq -r .chromium.resX ${CONFIG})
