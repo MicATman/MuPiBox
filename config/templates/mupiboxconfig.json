@@ -276,8 +276,8 @@
 	},
 	"chromium": {
 		"debug": "0",
-		"resX": "800",
-		"resY": "480",
+		"resX": "1920",
+		"resY": "1080",
 		"gpu": false,
 		"sccrollanimation": false,
 		"cachepath": "/home/dietpi/.mupibox/chromium_cache",
