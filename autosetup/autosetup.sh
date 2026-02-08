@@ -224,7 +224,8 @@ exec 3>${LOG}
 	#sudo mkdir /etc/spotifyd >&3 2>&3
 	sudo mkdir /etc/mupibox >&3 2>&3
 	sudo mkdir /var/log/mupibox/ >&3 2>&3
-	sudo mkdir /home/dietpi/chromedata/ >&3 2>&3
+	mkdir /home/dietpi/chromedata/ >&3 2>&3
+	sudo chown dietpi:dietpi /home/dietpi/chromedata/ >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Clean and create directories  ##  finished after $((after - $before)) seconds" >&3 2>&3
 	STEP=$(($STEP + 1))
