@@ -9,13 +9,13 @@ SHUT_SOUND=$(/usr/bin/jq -r .mupibox.shutSound ${CONFIG})
 AUDIO_DEVICE=$(/usr/bin/jq -r .mupibox.audioDevice ${CONFIG})
 START_VOLUME=$(/usr/bin/jq -r .mupibox.startVolume ${CONFIG})
 PLAYERSTATE="/tmp/playerstate"
-HOMEP=$(/usr/bin/jq -r .chromium.homep ${CONFIG})
 
 if [ $(head -n1 ${PLAYERSTATE}) = "play" ]; then
   curl -s http://127.0.0.1:5005/pause
 fi
 
 sudo -i -u dietpi /usr/local/bin/mupibox/./shutdown_sound.sh
+sudo /usr/local/bin/mupibox/./homep.sh
 #/usr/bin/pactl set-sink-volume @DEFAULT_SINK@ ${START_VOLUME}% 
 #/usr/bin/aplay ${SHUT_SOUND}
 
@@ -28,7 +28,6 @@ if [ -n "$1" ]; then
 else
     /usr/bin/fbv ${SHUT_SPLASH} &
 fi
-/usr/bin/cat <<< $(/usr/bin/jq --arg v "http://localhost:8200" '.chromium.homep = $v' ${CONFIG}) >  ${CONFIG}
 
 wled_shut_active=$(/usr/bin/jq -r .wled.shutdown_active ${CONFIG})
 wled_shut_id=$(/usr/bin/jq -r .wled.shutdown_id ${CONFIG})
