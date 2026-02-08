@@ -257,6 +257,7 @@ exec 3>${LOG}
 
 	unzip ${MUPI_SRC}/bin/nodejs/deploy.zip -d /home/dietpi/.mupibox/Sonos-Kids-Controller-master/ >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/www.json /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config/config.json >&3 2>&3
+	cp ${MUPI_SRC}/config/templates/data.json /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config/data.json >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/monitor.json /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config/monitor.json >&3 2>&3
 	cd /home/dietpi/.mupibox/Sonos-Kids-Controller-master >&3 2>&3
 	# Start backend-api.
