@@ -133,12 +133,12 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 
 	###############################################################################################
 
-	echo -e "XXX\n${STEP}\nInstall DietPi software dependencies ...\nXXX"
-	before=$(date +%s)
-	su - -c "yes '' | /boot/dietpi/dietpi-software install 200" >&3 2>&3
-	after=$(date +%s)
-	echo -e "## DietPi software dependencies ## finished after $((after - before)) seconds" >&3 2>&3
-	STEP=$((STEP + 1))
+	#echo -e "XXX\n${STEP}\nInstall DietPi software dependencies ...\nXXX"
+	#before=$(date +%s)
+	#su - -c "yes '' | /boot/dietpi/dietpi-software install 200" >&3 2>&3
+	#after=$(date +%s)
+	#echo -e "## DietPi software dependencies ## finished after $((after - before)) seconds" >&3 2>&3
+	#STEP=$((STEP + 1))
 
 	###############################################################################################
 
