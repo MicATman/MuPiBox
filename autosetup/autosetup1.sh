@@ -37,7 +37,7 @@ fi
 rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 
 {
-	packages2install="lighttpd-mod-openssl gpiod git libasound2 mplayer pulseaudio-module-bluetooth pip id3tool bluez zip rrdtool scrot net-tools wireless-tools autoconf automake bc build-essential python3-gpiozero python3-rpi.gpio python3-lgpio python3-serial python3-requests python3-paho-mqtt libgles2-mesa mesa-utils libsdl2-dev preload python3-smbus2 pigpio libjson-c-dev i2c-tools libi2c-dev python3-smbus python3-alsaaudio python3-netifaces libwidevinecdm0 python3-flask"
+	packages2install="lighttpd-mod-openssl gpiod git libasound2 samba mplayer pulseaudio-module-bluetooth pip id3tool bluez zip unzip rrdtool scrot net-tools wireless-tools autoconf automake bc build-essential python3-gpiozero python3-rpi.gpio python3-lgpio python3-serial python3-requests python3-paho-mqtt libgles2-mesa mesa-utils libsdl2-dev preload python3-smbus2 pigpio libjson-c-dev i2c-tools libi2c-dev python3-smbus python3-alsaaudio python3-netifaces libwidevinecdm0 python3-flask"
 
 	###############################################################################################
 
@@ -196,19 +196,28 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Install/Update Node.js 22 ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
+	if [ $OS != "bullseye" ]; then
+	echo -e "XXX\n${STEP}\nInstall package npm\nXXX"
+		before=$(date +%s)
+		sudo apt-get install -y npm >&3 2>&3
+		after=$(date +%s)
+		echo -e "## Install package npm  ##  finished after $((after - $before)) seconds" >&3 2>&3
+	fi
+	STEP=$(($STEP + 1))
+	
 
 	###############################################################################################
 
 	echo -e "XXX\n${STEP}\nInstall ionic... \nXXX"
 	before=$(date +%s)
-	npm install -g @ionic/cli >&3 2>&3
+	sudo npm install -g @ionic/cli >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Install ionic ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
 
 	echo -e "XXX\n${STEP}\nInstall pm2... \nXXX"
 	before=$(date +%s)
-	npm install pm2 -g >&3 2>&3
+	sudo npm install pm2 -g >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Install pm2 ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
@@ -269,10 +278,18 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	unzip ${MUPI_SRC}/bin/nodejs/deploy.zip -d /home/dietpi/.mupibox/Sonos-Kids-Controller-master/ >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/www.json /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config/config.json >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/monitor.json /home/dietpi/.mupibox/Sonos-Kids-Controller-master/server/config/monitor.json >&3 2>&3
+	cd /home/dietpi/.mupibox/Sonos-Kids-Controller-master >&3 2>&3
+	# Start backend-api.
+	pm2 start server.js >&3 2>&3
+	pm2 save >&3 2>&3
+	# Setup and start backend-player.
 	cp /home/dietpi/.mupibox/Sonos-Kids-Controller-master/spotify-control.js /home/dietpi/.mupibox/spotifycontroller-main/spotify-control.js >&3 2>&3
 	cp ${MUPI_SRC}/config/templates/spotifycontroller.json /home/dietpi/.mupibox/spotifycontroller-main/config/config.json >&3 2>&3
 	ln -sf /etc/mupibox/mupiboxconfig.json /home/dietpi/.mupibox/spotifycontroller-main/config/mupiboxconfig.json >&3 2>&3
 	ln -sf /var/www/images/mupif.png /home/dietpi/.mupibox/Sonos-Kids-Controller-master/www/mupi.png >&3 2>&3
+	cd /home/dietpi/.mupibox/spotifycontroller-main >&3 2>&3
+	pm2 start spotify-control.js >&3 2>&3
+	pm2 save >&3 2>&3
 	chown -R dietpi:dietpi /home/dietpi/.mupibox >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Install frontend, backend-api, and backend-player ## finished after $((after - before)) seconds" >&3 2>&3
@@ -301,10 +318,7 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 
 	echo -e "XXX\n${STEP}\nSetup DietPi-Dashboard... \nXXX"
 	before=$(date +%s)
-	mkdir -p /opt/dietpi-dashboard >&3 2>&3
-	rm -f /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
-	curl -fL "$(curl -sSf 'https://api.github.com/repos/nonnorm/DietPi-Dashboard/releases/latest' | mawk -F\" "/\"browser_download_url\": \".*dietpi-dashboard-$(uname -m)\"/{print \$4}")" -o /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
-	chmod +x /opt/dietpi-dashboard/dietpi-dashboard >&3 2>&3
+	su - -c "yes '' | /boot/dietpi/dietpi-software install 200" >&3 2>&3
 	curl -sSfL https://raw.githubusercontent.com/nonnorm/DietPi-Dashboard/v0.6.2/config.toml -o /opt/dietpi-dashboard/config.toml >&3 2>&3
 	sed -i 's/#terminal_user = "root"/terminal_user = "dietpi"/g' /opt/dietpi-dashboard/config.toml >&3 2>&3
 	after=$(date +%s)
@@ -386,7 +400,7 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	ln -sf /home/dietpi/MuPiBox/themes/custom-bg.jpg /home/dietpi/.mupibox/Sonos-Kids-Controller-master/www/theme-data/custom/custom-bg.jpg >&3 2>&3
 
 	mv ${MUPI_SRC}/themes/*.css /home/dietpi/MuPiBox/themes/ >&3 2>&3
-	mv ${MUPI_SRC}/scripts/chromium-autostart.sh /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
+	# mv ${MUPI_SRC}/scripts/chromium-autostart.sh /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
 	mv ${MUPI_SRC}/scripts/mupibox/* /usr/local/bin/mupibox/ >&3 2>&3
 	mv ${MUPI_SRC}/scripts/bluetooth/* /usr/local/bin/mupibox/ >&3 2>&3
 	mv ${MUPI_SRC}/scripts/wled/* /usr/local/bin/mupibox/ >&3 2>&3
@@ -502,20 +516,18 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	before=$(date +%s)
 	echo -ne '\n' | /boot/dietpi/dietpi-software install 113 >&3 2>&3
 	/boot/dietpi/dietpi-autostart 11 >&3 2>&3
-	sudo mv -f ${MUPI_SRC}/scripts/chromium-autostart.sh /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
-	chmod +x /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
 	apt-get install xserver-xorg-legacy -y >&3 2>&3
 	sed -i 's/allowed_users\=console/allowed_users\=anybody/g' /etc/X11/Xwrapper.config >&3 2>&3
 	mv -f ${MUPI_SRC}/config/templates/98-dietpi-disable_dpms.conf /etc/X11/xorg.conf.d/98-dietpi-disable_dpms.conf >&3 2>&3
-	sed -i 's/tty1/tty3 vt.global_cursor_default\=0 fastboot noatime nodiratime noram splash silent loglevel\=0 vt.default_red\=68,68,68,68,68,68,68,68 vt.default_grn\=175,175,175,175,175,175,175,175 vt.default_blu\=226,226,226,226,226,226,226,226/g' /boot/cmdline.txt >&3 2>&3
+	sed -i 's/tty1/tty3 vt.global_cursor_default\=0 fastboot noatime nodiratime noram splash silent loglevel\=0 vt.default_red\=68,68,68,68,68,68,68,68 vt.default_grn\=175,175,175,175,175,175,175,175 vt.default_blu\=226,226,226,226,226,226,226,226/g' ${BOOT_CMDLINE} >&3 2>&3
 	sed -i 's/session    optional   pam_motd.so motd\=\/run\/motd.dynamic/#session    optional   pam_motd.so motd\=\/run\/motd.dynamic/g' /etc/pam.d/login >&3 2>&3
 	sed -i 's/session    optional   pam_motd.so noupdate/#session    optional   pam_motd.so noupdate/g' /etc/pam.d/login >&3 2>&3
 	sed -i 's/ExecStart\=-\/sbin\/agetty -a dietpi -J \%I \$TERM/ExecStart\=-\/sbin\/agetty --skip-login --noclear --noissue --login-options "-f dietpi" \%I \$TERM/g' /etc/systemd/system/getty@tty1.service.d/dietpi-autologin.conf >&3 2>&3
 	/boot/dietpi/func/dietpi-set_hardware gpumemsplit 128 >&3 2>&3
 	/boot/dietpi/func/dietpi-set_hardware headless 0 >&3 2>&3
 	/boot/dietpi/func/dietpi-set_hardware rpi-opengl disable >&3 2>&3
-	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_width=' \"framebuffer_width=800\" /boot/config.txt" >&3 2>&3
-	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_height=' \"framebuffer_height=480\" /boot/config.txt" >&3 2>&3
+	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_width=' \"framebuffer_width=800\" ${BOOT_CONFIG}" >&3 2>&3
+	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_height=' \"framebuffer_height=480\" ${BOOT_CONFIG}" >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Install Chromium ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
@@ -577,17 +589,16 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 
 	echo -e "XXX\n${STEP}\nFinalizing setup... \nXXX"
 	before=$(date +%s)
-	/usr/local/bin/mupibox/./m3u_generator.sh >&3 2>&3
-	/usr/local/bin/mupibox/./setting_update.sh >&3 2>&3
+	#/usr/local/bin/mupibox/./m3u_generator.sh >&3 2>&3
+	#/usr/local/bin/mupibox/./setting_update.sh >&3 2>&3
 	service librespot restart >&3 2>&3
-	sudo -H -u dietpi bash -c "cd /home/dietpi/.mupibox/Sonos-Kids-Controller-master && npm install" >&3 2>&3
-	sudo -H -u dietpi bash -c "pm2 start server.js" >&3 2>&3
-	sudo -H -u dietpi bash -c "pm2 save" >&3 2>&3
-	sudo -H -u dietpi bash -c "cd /home/dietpi/.mupibox/spotifycontroller-main" >&3 2>&3
-	sudo -H -u dietpi bash -c "pm2 start spotify-control.js" >&3 2>&3
-	sudo -H -u dietpi bash -c "pm2 save" >&3 2>&3
+	#sudo -H -u dietpi bash -c "cd /home/dietpi/.mupibox/Sonos-Kids-Controller-master && npm install" >&3 2>&3
+	#sudo -H -u dietpi bash -c "pm2 start server" >&3 2>&3
+	#sudo -H -u dietpi bash -c "pm2 save" >&3 2>&3
 	chown -R dietpi:dietpi /home/dietpi/.mupibox /home/dietpi/MuPiBox >&3 2>&3
 	chown dietpi:dietpi ${CONFIG} >&3 2>&3
+	mv ${MUPI_SRC}/scripts/chromium-autostart.sh /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
+	chmod +x /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Finalizing setup ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
@@ -604,6 +615,6 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	mv ${LOG} /boot/autosetup.log > /dev/null 2>&3
 	sleep 5
 
-} | whiptail --title "MuPiBox Autosetup ${VERSION_LONG}" --gauge "Please wait while installing" 6 60 0
+}
 
 reboot
