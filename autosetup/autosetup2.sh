@@ -525,7 +525,7 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	sed -i 's/ExecStart\=-\/sbin\/agetty -a dietpi -J \%I \$TERM/ExecStart\=-\/sbin\/agetty --skip-login --noclear --noissue --login-options "-f dietpi" \%I \$TERM/g' /etc/systemd/system/getty@tty1.service.d/dietpi-autologin.conf >&3 2>&3
 	/boot/dietpi/func/dietpi-set_hardware gpumemsplit 128 >&3 2>&3
 	/boot/dietpi/func/dietpi-set_hardware headless 0 >&3 2>&3
-	/boot/dietpi/func/dietpi-set_hardware rpi-opengl disable >&3 2>&3
+	# /boot/dietpi/func/dietpi-set_hardware rpi-opengl disable >&3 2>&3
 	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_width=' \"framebuffer_width=800\" ${BOOT_CONFIG}" >&3 2>&3
 	su - -c ". /boot/dietpi/func/dietpi-globals && G_CHECK_ROOT_USER && G_CHECK_ROOTFS_RW && G_INIT && G_CONFIG_INJECT 'framebuffer_height=' \"framebuffer_height=480\" ${BOOT_CONFIG}" >&3 2>&3
 	after=$(date +%s)
