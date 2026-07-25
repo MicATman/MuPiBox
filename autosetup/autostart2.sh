@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "echo '' && echo '' && echo 'Please wait, MuPiBox-Installer starts soon...' && sleep 10" >> /home/dietpi/.bashrc
+echo "cd; curl -L https://raw.githubusercontent.com/MicATman/MuPiBox/main/autosetup/autosetup2.sh | sudo bash" >> /home/dietpi/.bashrc
+reboot
