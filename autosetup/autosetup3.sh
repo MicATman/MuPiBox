@@ -410,6 +410,7 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	mv ${MUPI_SRC}/scripts/fan/* /usr/local/bin/mupibox/ >&3 2>&3
 	mv ${MUPI_SRC}/scripts/wifi/* /usr/local/bin/mupibox/ >&3 2>&3
 	mv ${MUPI_SRC}/scripts/mqtt/* /usr/local/bin/mupibox/ >&3 2>&3
+	mv ${MUPI_SRC}/scripts/button/* /usr/local/bin/mupibox/ >&3 2>&3
 	mv ${MUPI_SRC}/config/templates/add_wifi.json /boot/add_wifi.json >&3 2>&3
 	mv ${MUPI_SRC}/config/templates/.bashrc /home/dietpi/.bashrc >&3 2>&3
 	chown -R dietpi:dietpi /home/dietpi/.mupibox/Sonos-Kids-Controller-master/ /home/dietpi/MuPiBox /home/dietpi/.bashrc >&3 2>&3
