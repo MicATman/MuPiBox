@@ -602,6 +602,9 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	chown dietpi:dietpi ${CONFIG} >&3 2>&3
 	mv ${MUPI_SRC}/scripts/chromium-autostart.sh /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
 	chmod +x /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh >&3 2>&3
+	sudo usermod -aG video,render,input dietpi >&3 2>&3
+	sudo usermod -aG dietpi www-data >&3 2>&3
+	sudo chmod 755 /home/dietpi >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Finalizing setup ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
