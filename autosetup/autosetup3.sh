@@ -254,7 +254,8 @@ rm -Rf /home/dietpi/mupibox.zip /home/dietpi/MuPiBox-* >&3 2>&3
 	mkdir -p /etc/mupibox >&3 2>&3
 	mkdir -p /etc/librespot >&3 2>&3
 	mkdir -p /var/log/mupibox/ >&3 2>&3
-	chown -R dietpi:dietpi /home/dietpi/.mupibox /home/dietpi/MuPiBox >&3 2>&3
+	mkdir /home/dietpi/chromedata/ >&3 2>&3
+	chown -R dietpi:dietpi /home/dietpi/.mupibox /home/dietpi/MuPiBox /home/dietpi/chromedata/ >&3 2>&3
 	after=$(date +%s)
 	echo -e "## Clean and create directories ## finished after $((after - before)) seconds" >&3 2>&3
 	STEP=$((STEP + 1))
