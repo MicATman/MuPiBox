@@ -48,9 +48,9 @@ CHROMIUM_OPTS="${CHROMIUM_OPTS} --cast-app-background-color=44afe2ff --default-b
 # KIOSK Parameters
 if ${KIOSK} ; then
 # CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk http://localhost:8200 --start-fullscreen --start-maximized"
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk ${HOMEP} --start-fullscreen --start-maximized --user-data-dir="/home/dietpi/chromedata/""
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} --kiosk ${HOMEP} --start-fullscreen --start-maximized --password-store=basic --user-data-dir="/home/dietpi/chromedata/""
 else
-	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized --user-data-dir="/home/dietpi/chromedata/""
+	CHROMIUM_OPTS="${CHROMIUM_OPTS} http://localhost:8200 https://open.spotify.com --start-maximized --password-store=basic --user-data-dir="/home/dietpi/chromedata/""
 
 fi
 # CACHE Parameters
